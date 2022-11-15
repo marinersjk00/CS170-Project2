@@ -49,8 +49,9 @@ class Main
 		
 		
 		int outercounter = 0;
+		double overall = 0;
 		
-		while(outercounter < 20) { //20 simulations per program execution
+		while(outercounter < 10000) { //10000 simulations per program execution
 			int counter = 0;
 			int good = 0;
 		while(counter < 10000) { //each simulation runs 10,000 times
@@ -64,11 +65,13 @@ class Main
 		}
 		
 		double prob = (double)good / 10000;
+		overall = overall + prob;
 		
-		System.out.print("\n" + (outercounter + 1) + ": " + df.format(prob));
 		outercounter++;
 		
 		}
+		
+		System.out.print("Overall Probability of Getting Good Triangle: " + df.format((overall / 10000)));
 		
 	}
 }
