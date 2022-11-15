@@ -28,7 +28,10 @@ class Main
 		double ab = a + b;
 		double ac = a + c;
 		double bc = b + c;
-		
+		/*
+		 * Source for Triangle Property
+		 * https://byjus.com/maths/properties-of-triangle/#:~:text=The%20sum%20of%20the%20length,three%20sides%20of%20a%20triangle.
+		 */
 		
 		if(ab > c && ac > b && bc > a) return true;
 		else return false;
@@ -36,16 +39,21 @@ class Main
 	
 	public static void main(String[] args) {
 		
+		/*
+		 * Source for decimal formatting
+		 * https://www.baeldung.com/java-round-decimal-number
+		 * 
+		 */
 		DecimalFormat df = new DecimalFormat("#.###");
 		
 		
 		
 		int outercounter = 0;
 		
-		while(outercounter < 20) {
+		while(outercounter < 20) { //20 simulations per program execution
 			int counter = 0;
 			int good = 0;
-		while(counter < 10000) {
+		while(counter < 10000) { //each simulation runs 10,000 times
 			
 			
 			
