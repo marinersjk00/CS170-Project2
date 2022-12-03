@@ -1,6 +1,7 @@
 import java.util.*;
 import java.io.*;
 
+//Note for self, 2.0000 == 2 in java
 
 class Main
 {
@@ -13,7 +14,6 @@ class Main
 		Scanner readLine = new Scanner(textFile);
 		
 		int rowNum = 0;
-		int colNum = 0;
 		
 		while(readLine.hasNextLine()) {
 			String currLine = readLine.nextLine();
@@ -40,19 +40,54 @@ class Main
 	
 }
 	
+	static ArrayList<Double> accuracy(ArrayList<ArrayList<Double>> features) {
+		
+		int correct = 0;
+		ArrayList<Double> accus = new ArrayList<Double>();
+		for(int i = 1; i < features.get(0).size(); i++) {
+			for(int j = 0; j < features.size(); j++) {
+				double minDist = 9999999.9;
+				double currFeature = features.get(j).get(i);
+				int nearest = -1;
+				for(int k = 0; k < features.size(); k++) {
+					if(k != j) {
+						double testFeature = features.get(k).get(i);
+						double tempDist = Math.abs(currFeature - testFeature);
+						if(tempDist < minDist) {
+							minDist = tempDist;
+							nearest = k;
+						}
+					}
+				}
+				
+				if((features.get(j).get(0) == 1.0 && features.get(nearest).get(0) == 1.0) || (features.get(j).get(0) == 2.0 && features.get(nearest).get(0) == 2.0)) {
+					correct++;
+				}
+				
+			}
+		
+			double acc = ((double)correct / features.size());
+			accus.add(acc);
+			correct = 0;
+		}
+		
+		
+		return accus;
+		
+	}
+	
+	
 	public static void main(String[] args) {
 		
 		System.out.println("Welcome to Jordan Kuschner's Nearest Neighbor Classifier!");
 		String fileName = "CS170_Small_Data__1.txt";
 		ArrayList<ArrayList<Double>> features = parser(fileName);
+		ArrayList<Double> accuracies = accuracy(features);
 		
-		for(int i = 0; i < 10; i++) {
-			System.out.print((i + 1) + ": ");
-			for(int j = 0; j < features.get(i).size(); j++) {
-				System.out.print(features.get(i).get(j) + "  ");
-			}
-			System.out.println();
+		for(int i = 0; i < accuracies.size(); i++) {
+			System.out.println("Accuracy of feature " + (i+1) + ": " + accuracies.get(i));
 		}
+		
 		
 	}
 	
