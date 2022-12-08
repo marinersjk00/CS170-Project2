@@ -1,5 +1,5 @@
 function maxAcc = jkProject2()
-    data = load("/MATLAB Drive/Projects/Feature Selection/CS170_Small_Data__1.txt");
+    data = load("/MATLAB Drive/Projects/Feature Selection/CS170_Small_Data__96.txt");
     
     maxAcc = 0;
     featureSet = [];
@@ -26,10 +26,12 @@ function maxAcc = jkProject2()
                     if accuracy > bestAccSoFar
                         bestAccSoFar = accuracy;
                         featureToAdd = k;
-                        if bestAccSoFar > maxAcc
+                      
+                    end
+                    if bestAccSoFar > maxAcc
                             maxAcc = bestAccSoFar;
-                        end
-                        
+                            featureSet(ind) = featureToAdd;
+                            ind = ind + 1;
                     end
                 
                 end
@@ -38,10 +40,7 @@ function maxAcc = jkProject2()
             currentSet(i) = featureToAdd;
             disp(["On level ", num2str(i), " I added feature ", num2str(featureToAdd), " to the set." ])
             disp(currentSet)
-            if maxAcc == bestAccSoFar
-                featureSet(ind) = featureToAdd;
-                ind = ind + 1;
-            end
+           
         end
     end
     
