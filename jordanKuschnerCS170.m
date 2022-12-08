@@ -1,10 +1,14 @@
-function featureSet = jkProject2()
-    data = load("/MATLAB Drive/Projects/Feature Selection/CS170_Small_Data__96.txt");
+function maxAcc = jkProject2()
+    data = load("/MATLAB Drive/Projects/Feature Selection/CS170_Small_Data__1.txt");
+    
     maxAcc = 0;
-    featureSet = []
-    feature_search(data)
-    disp(["Accuracy of Set: ", int2str(maxAcc)])
-    function feature_search(data)
+    featureSet = [];
+    ind = 1;
+    tic
+    feature_search(data);
+    toc
+    disp(featureSet);
+    function currentSet = feature_search(data)
     
     
     currentSet = [];
@@ -12,31 +16,38 @@ function featureSet = jkProject2()
             disp(["On the ", int2str(i), "th level of the search tree"]);
             featureToAdd = [];
             bestAccSoFar = 0;
+          
             for k = 1 : size(data, 2)-1
                  if isempty(intersect(currentSet, k))
                      disp(["-->Considering adding ", int2str(k), "th feature..."]);
+                 
                      accuracy = leaveOneOut(data, currentSet, k + 1) 
         
                     if accuracy > bestAccSoFar
                         bestAccSoFar = accuracy;
                         featureToAdd = k;
+                        if bestAccSoFar > maxAcc
+                            maxAcc = bestAccSoFar;
+                        end
+                        
                     end
-
-                    if bestAccSoFar > maxAcc
-                        maxAcc = bestAccSoFar;
-                        featureSet = currentSet;
-                    end
+                
                 end
             end
-    
+
             currentSet(i) = featureToAdd;
             disp(["On level ", num2str(i), " I added feature ", num2str(featureToAdd), " to the set." ])
+            disp(currentSet)
+            if maxAcc == bestAccSoFar
+                featureSet(ind) = featureToAdd;
+                ind = ind + 1;
+            end
         end
     end
     
     function accuracy = leaveOneOut(data, currentSet, featureToAdd)
     for i = 2 : size(data, 2)
-        if isempty(intersect(currentSet, i-1))
+        if isempty(intersect(currentSet, i-1)) && featureToAdd ~= (i-1)
                data(:, i) = 0;
         end
     end
@@ -49,8 +60,9 @@ function featureSet = jkProject2()
         nearestNeighborLoc = inf;
     
         for k = 1 : size(data, 1)
-            disp(['Is ', int2str(i), ' a nearest neighbor with ', int2str(k), '?']);
+            
             if k ~= i
+                disp(['Is ', int2str(i), ' a nearest neighbor with ', int2str(k), '?']);
                 distance = sqrt(sum((testObj - data(k, 2:end)).^2));
                 if distance < nearestNeighborDist
                     nearestNeighborDist = distance;
