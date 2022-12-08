@@ -1,11 +1,11 @@
 function maxAcc = jkProject2()
-    data = load("/MATLAB Drive/Projects/Feature Selection/CS170_Large_Data__96.txt");
+    data = load("/MATLAB Drive/Projects/Feature Selection/CS170_Small_Data__29.txt");
     
     maxAcc = 0;
     featureSet = [];
 
     tic
-    feature_search_backwards(data);
+    feature_search_forwards(data);
     time = toc
     disp(featureSet);
     minutes = 0;
