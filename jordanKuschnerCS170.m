@@ -21,18 +21,14 @@ function maxAcc = jkProject2()
                  if isempty(intersect(currentSet, k))
                      disp(["-->Considering adding ", int2str(k), "th feature..."]);
                  
-                     accuracy = leaveOneOut(data, currentSet, k + 1) 
+                     accuracy = leaveOneOut(data, currentSet, k) 
         
                     if accuracy > bestAccSoFar
                         bestAccSoFar = accuracy;
                         featureToAdd = k;
                       
                     end
-                    if bestAccSoFar > maxAcc
-                            maxAcc = bestAccSoFar;
-                            featureSet(ind) = featureToAdd;
-                            ind = ind + 1;
-                    end
+                    
                 
                 end
             end
@@ -40,6 +36,11 @@ function maxAcc = jkProject2()
             currentSet(i) = featureToAdd;
             disp(["On level ", num2str(i), " I added feature ", num2str(featureToAdd), " to the set." ])
             disp(currentSet)
+            if bestAccSoFar > maxAcc
+                            maxAcc = bestAccSoFar;
+                            featureSet = [];
+                            featureSet = currentSet
+            end
            
         end
     end
