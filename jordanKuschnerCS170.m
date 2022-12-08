@@ -1,13 +1,26 @@
 function maxAcc = jkProject2()
-    data = load("/MATLAB Drive/Projects/Feature Selection/CS170_Large_Data__6.txt");
+    data = load("/MATLAB Drive/Projects/Feature Selection/CS170_Large_Data__96.txt");
     
     maxAcc = 0;
     featureSet = [];
 
     tic
     feature_search_backwards(data);
-    toc
+    time = toc
     disp(featureSet);
+    minutes = 0;
+    if time > 60
+        time = time / 60;
+        minutes = 1;
+    end
+
+    if minutes == 0
+        fprintf("Elapsed Time: %0.3f seconds", time);
+    end
+
+    if minutes == 1
+        fprintf("Elapsed Time: %0.3f minutes", time);
+    end
     function currentSet = feature_search_forwards(data)
     
     
@@ -48,8 +61,8 @@ function maxAcc = jkProject2()
 
  function currentSet = feature_search_backwards(data)
     currentSet = [];
-    for i = 1 : size(data,2)-1
-        currentSet(i) = i;
+    for q = 1 : size(data,2)-1
+        currentSet(q) = q;
     end
     
         for i = 1 : size(data,2)-1
@@ -58,28 +71,32 @@ function maxAcc = jkProject2()
             bestAccSoFar = 0;
           
             for k = 1 : size(data, 2)-1
+                if ~isempty(intersect(currentSet, k))
                      disp(["-->Considering removing ", int2str(k), "th feature..."]);
-                 
-                     accuracy = removeElement(data, currentSet, k) 
+                     
+                     accuracy = removeElement(data, currentSet, k); 
         
                     if accuracy > bestAccSoFar
                         bestAccSoFar = accuracy;
                         featureToRemove = k;
                       
                     end
-                    
+                end  
                 
                 
             end
 
-            currentSet = setdiff(currentSet, featureToRemove);
-            disp(["On level ", num2str(i), " I removed feature ", num2str(featureToRemove), " to the set." ])
+            for z = 1 : length(currentSet)
+                if currentSet(z) == featureToRemove
+                    currentSet(z) = [];
+                    break;
+                end
+            end
+            disp(["On level ", num2str(i), " I removed feature ", num2str(featureToRemove), " from the set." ])
             disp(currentSet)
             if bestAccSoFar > maxAcc
                             maxAcc = bestAccSoFar;
-                            % featureSet = [];
                             featureSet = currentSet;
-                            %ind = ind + 1;
             end
            
         end
@@ -124,7 +141,7 @@ function maxAcc = jkProject2()
 
     function accuracy = removeElement(data, currentSet, featureToRemove)
     for i = 2 : size(data, 2)
-        if isempty(intersect(currentSet, i-1)) || i-1 == featureToRemove
+        if isempty(intersect(currentSet, i-1)) || (i-1) == featureToRemove
                data(:, i) = 0;
         end
     end
