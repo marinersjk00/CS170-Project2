@@ -1,11 +1,20 @@
 function maxAcc = jkProject2()
-    data = load("/MATLAB Drive/Projects/Feature Selection/CS170_Small_Data__29.txt");
-    
+    data = load("/MATLAB Drive/Projects/Feature Selection/CS170_Large_Data__43.txt");
+    fprintf("Welcome to Jordan Kuschner's Feature Selector\n\n");
+    x = input("Please enter 1 for forward selection or 2 for backwards elimination");
+
     maxAcc = 0;
     featureSet = [];
 
     tic
-    feature_search_forwards(data);
+    if x == 2
+        fprintf("Beginning backward search...");
+        feature_search_backwards(data);
+    end
+    if x == 1
+        fprintf("Beginning forward search...");
+        feature_search_forwards(data);
+    end
     time = toc
     disp(featureSet);
     minutes = 0;
@@ -21,6 +30,8 @@ function maxAcc = jkProject2()
     if minutes == 1
         fprintf("Elapsed Time: %0.3f minutes", time);
     end
+
+    fprintf("\nAccuracy = %0.4f", maxAcc);
     function currentSet = feature_search_forwards(data)
     
     
@@ -74,7 +85,8 @@ function maxAcc = jkProject2()
                 if ~isempty(intersect(currentSet, k))
                      disp(["-->Considering removing ", int2str(k), "th feature..."]);
                      
-                     accuracy = removeElement(data, currentSet, k); 
+                     accuracy = removeElement(data, currentSet, k);
+                     disp(accuracy);
         
                     if accuracy > bestAccSoFar
                         bestAccSoFar = accuracy;
